@@ -33,7 +33,7 @@ fs.readFile("config.json", 'utf8', function(err, data) {
     console.log("Server port: " + port);
 
     // all environments
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     // Set up globals in the req object.
     // Do this first or they will not show up in the req.
