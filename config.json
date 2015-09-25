@@ -1,9 +1,5 @@
 {
     "development": {
-        "port": "4000",
-        "spotify": {
-            "appID": "<app_id>",
-            "appSecret": "<app_secret>"
-        }
+        "port": "4000"
     }
 }
