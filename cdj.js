@@ -90,21 +90,7 @@ fs.readFile("config.json", 'utf8', function(err, data) {
 
 
     // REQUESTS
-    
-    app.use(require('./routes.js)');
-
-    // login with passport spotify
-    app.post('/login/spotify', passport.authenticate('spotify'), function(req,res){
-        res.send(200);
-        res.end();
-    });
-
-    // logout with passport spotify
-    app.get('/logout', ensureAuthenticated, function(req, res){
-        req.logout();
-        res.send(200);
-        res.end();
-    });
+    app.use(require('./routes.js'));
 
     // start server
     http.createServer(app).listen(app.get('port'), function(){
