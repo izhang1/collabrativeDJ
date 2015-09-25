@@ -7,8 +7,17 @@ module.exports = function (app) {
     });
 
     app.get('/createPlaylist', function(req, res) {
-        spotify.createPlaylist();
-        res.send('created playlist');
+        var userId = req.body.userId;
+        var accessToken = req.body.accessToken;
+
+        spotify.createPlaylist(userId, accessToken, function(error, response, body) {
+
+            if (error) {
+                // TODO: Handle it
+            }
+
+            res.send(response.statusCode);
+        });
     });
 };
 
