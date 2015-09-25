@@ -1,5 +1,4 @@
-var path = require('path');
-var express = require ('express');
+var spotify = require('./services/spotify.js');
 
 module.exports = function (app) {
 
@@ -7,6 +6,10 @@ module.exports = function (app) {
         res.send('ello m8');
     });
 
+    app.get('/createPlaylist', function(req, res) {
+        spotify.createPlaylist();
+        res.send('created playlist');
+    });
 };
 
 
