@@ -1,4 +1,4 @@
-var spotify = require('./services/spotify.js');
+var spotify = require('../services/spotify.js');
 var assert = require('assert');
 
 describe('spotify', function() {
