@@ -12,8 +12,6 @@
     "lodash": "2.4.1",
     "mocha": "^2.3.3",
     "morgan": "1.1.1",
-    "passport": "0.2.1",
-    "passport-spotify": "0.3.0",
     "request": "^2.64.0"
   }
 }
