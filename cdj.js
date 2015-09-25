@@ -55,7 +55,8 @@ fs.readFile("config.json", 'utf8', function(err, data) {
     app.use(bodyParser.urlencoded({extended: 'false'}));
 
     // REQUESTS
-    app.use(require('./routes.js'));
+    // app.use(require('./routes.js'));
+    require('./routes.js')(app);
 
     // start server
     http.createServer(app).listen(app.get('port'), function(){
