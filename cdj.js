@@ -94,7 +94,7 @@ fs.readFile("config.json", 'utf8', function(err, data) {
 
     // start server
     http.createServer(app).listen(app.get('port'), function(){
-        console.log('Express server listening on port ' + app.get('port'))
+        console.log('Express server listening on port ' + app.get('port'));
     });
 
 });
