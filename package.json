@@ -1,17 +1,18 @@
 {
-    "name": "collaborativeDJ",
-    "version": "0.0.1",
-    "private": true,
-    "contributors": [
-        "Levi Starrett <leviathan747@gmail.com>"
-    ],
-    "dependencies": {
-        "express": "4.5.1",
-        "passport": "0.2.1",
-        "passport-spotify": "0.3.0",
-        "body-parser": "1.4.3",
-        "lodash": "2.4.1",
-        "express-session": "1.6.4",
-        "morgan": "1.1.1"
-    }
+  "name": "collaborativeDJ",
+  "version": "0.0.1",
+  "private": true,
+  "contributors": [
+    "Levi Starrett <leviathan747@gmail.com>"
+  ],
+  "dependencies": {
+    "body-parser": "1.4.3",
+    "express": "4.5.1",
+    "express-session": "1.6.4",
+    "lodash": "2.4.1",
+    "mocha": "^2.3.3",
+    "morgan": "1.1.1",
+    "passport": "0.2.1",
+    "passport-spotify": "0.3.0"
+  }
 }
