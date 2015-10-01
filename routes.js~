@@ -21,15 +21,33 @@ module.exports = function (app) {
     });
 
     app.get('/searchSong', function(req, res) {
-        var userId = req.body.userId;
-        var accessToken = req.body.accessToken;
+	var song = req.body.song;
+
+	spotify.searchSong(song, function(error, response, body) {
+
+            if(error) {
+              // TODO: Handle error
+            }
+
+            res.send(response.statusCode);
+        });
 
     });
 
     app.post('/addSong', function(req, res) {
         var userId = req.body.userId;
-        var accessToken = req.body.accessToken;  
+	var playlistId = req.body.playlistId;
+        var accessToken = req.body.accessToken;
+	var songUri = req.body.songUri;
 
+	spotify.addSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
+
+	  if(error) {
+	    // TODO: Handle error
+	  }
+
+	  res.send(response.statusCode);
+	});
     });
 
     app.post('/voteSong', function(req, res) {
