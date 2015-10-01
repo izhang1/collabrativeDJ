@@ -51,18 +51,12 @@ module.exports = function (app) {
     });
 
     app.post('/voteSong', function(req, res) {
-        var userId = req.body.userId;
-        var accessToken = req.body.accessToken;
+        var vote = req.body.vote;
 
     });
 
     app.post('/deleteSong', function(req, res) {
-        var userId = req.body.userId;
-        var accessToken = req.body.accessToken;
-
-    });
-
-    app.post('/savePlaylist', function(req, res) {
+        
 
     });
 

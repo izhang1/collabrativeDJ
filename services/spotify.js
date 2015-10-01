@@ -88,6 +88,37 @@ spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
 
 };
 
+
+spotify.deleteSong = function(userId, playlistId, accessToken, songUri, cb){
+    console.log('deleting song');
+
+// Need to check what form songUri is passed in as
+    var trackParam = "{ \"tracks\": [{ \"uri\": \"" + songUri + "\" }] }" 
+    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
+    
+    var authorization = 'Bearer ' + accessToken;
+    var body = {
+        tracks: [{ uri: songUri }] }
+    };
+
+    request({
+        uri: uri,
+        method: 'DELETE',
+        headers: {
+            'Authorization': authorization
+        },
+        body: body,
+        json: true,
+    }, function(error, response, body) {
+        if(error) {
+            console.log('error: ' + JSON.stringify(error));
+        }
+
+        cb(error, response, body);
+    });
+
+};
+
 module.exports = spotify;
 
 

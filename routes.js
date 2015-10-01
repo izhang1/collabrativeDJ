@@ -51,18 +51,24 @@ module.exports = function (app) {
     });
 
     app.post('/voteSong', function(req, res) {
-        var userId = req.body.userId;
-        var accessToken = req.body.accessToken;
+        var vote = req.body.vote;
 
     });
 
     app.post('/deleteSong', function(req, res) {
         var userId = req.body.userId;
+	var playlistId = req.body.playlistId;
         var accessToken = req.body.accessToken;
+	var songUri = req.body.songUri;
 
-    });
+	spotify.deleteSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
 
-    app.post('/savePlaylist', function(req, res) {
+	  if(error) {
+	    // TODO: Handle error
+	  }
+
+	  res.send(response.statusCode);
+	});
 
     });
 
