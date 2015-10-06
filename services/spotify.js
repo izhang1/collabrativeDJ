@@ -20,7 +20,7 @@ spotify.createPlaylist = function(userId, accessToken, cb) {
             'Authorization': authorization
         },
         body: body,
-        json: true,
+        json: true
     }, function(error, response, body) {
         if(error) {
             console.log('error: ' + JSON.stringify(error));
