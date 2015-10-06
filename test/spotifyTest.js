@@ -22,4 +22,29 @@ describe('spotify', function() {
             );
         });
     });
+
+    describe('#searchTrack', function() {
+        it('should search a track successfully', function(done) {
+
+            var track = 'Paper Trail$';
+            spotify.searchTrack(track, ACCESS_TOKEN, function(error, response, body) {
+                if (error) throw error;
+
+                // assert that the status code is acceptable
+                assert.equal([200, 201].indexOf(response.statusCode) === -1, false);
+
+                done();
+            });
+        });
+    });
+
+    describe('#addTrack', function() {
+        xit('should add a track successfully', function(done) {
+        });
+    });
+
+    describe('#deleteTrack', function() {
+        xit('should delete a track successfully', function(done) {
+        });
+    });
 });
