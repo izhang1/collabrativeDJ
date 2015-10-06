@@ -31,22 +31,22 @@ spotify.createPlaylist = function(userId, accessToken, cb) {
 };
 
 
-spotify.searchSong = function(song, cb){
-    console.log('searching for song');
+spotify.searchTrack = function(track, accessToken, cb){
+    console.log('searching for track');
 
-    var formattedSong = song.replace(" ", "+");
-    var uri = "https://api.spotify.com/v1/search?q=" + formattedSong + "&type=track";
-    
-    var body = {
-        name: 'Song Search',
-        public: true
-    };
+    var SEARCH_LIMIT = '5';
+
+    var formattedTrack = track.replace(" ", "+");
+    var uri = "https://api.spotify.com/v1/search?q=" + formattedTrack+ "&type=track&limit=" + SEARCH_LIMIT;
+    var authorization = 'Bearer ' + accessToken;
 
     request({
         uri: uri,
         method: 'GET',
-        body: body,
-        json: true,
+        headers: {
+            'Authorization': authorization
+        },
+        json: true
     }, function(error, response, body) {
         if(error) {
             console.log('error: ' + JSON.stringify(error));
