@@ -98,7 +98,7 @@ spotify.deleteSong = function(userId, playlistId, accessToken, songUri, cb){
     
     var authorization = 'Bearer ' + accessToken;
     var body = {
-        tracks: [{ uri: songUri }] }
+        tracks: [{ uri: songUri }]
     };
 
     request({
