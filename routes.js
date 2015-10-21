@@ -1,4 +1,5 @@
 var spotify = require('./services/spotify.js');
+var db = require('./models.js');
 
 module.exports = function (app) {
 
@@ -16,17 +17,23 @@ module.exports = function (app) {
 	var randomNumber = Math.floor((Math.random() * 1000) + 1);
 	var playlistJoinCode = seconds.toString() + randomNumber.toString();
 
+        // create new record in the DB
+        var new_playlist = new db.Playlist({
+            id: playlistJoinCode,
+            user_id: userId,
+            access_token: accessToken
+        });
+        new_playlist.save(function (err) {if (err) console.log ('Error on save!')});
+
         spotify.createPlaylist(userId, accessToken, function(error, response, body) {
 
             if (error) {
                 // TODO: Handle it
+                console.log(error);
             }
 
             res.send(response.statusCode);
         });
-
-	// TODO: add code to store above playlist join code in database with playlistId created
-	// and the userId
 
     });
 
