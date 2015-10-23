@@ -39,7 +39,21 @@ describe('spotify', function() {
     });
 
     describe('#addTrack', function() {
-        xit('should add a track successfully', function(done) {
+        it('should add a track successfully', function(done) {
+
+            // spencer's info
+            var userId = '1229748481';
+            var playlistId = '3wwhu5WZX8CUpyVQ8pMUxm';
+            var songURI = 'spotify:track:0FutrWIUM5Mg3434asiwkp';
+
+            spotify.addTrack(userId, playlistId, ACCESS_TOKEN, songURI, function(error, response, body) {
+                if (error) throw error;
+
+                // assert that the status code is acceptable
+                assert.equal([200, 201].indexOf(response.statusCode) === -1, false);
+
+                done();
+            });
         });
     });
 
