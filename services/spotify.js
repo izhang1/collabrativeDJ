@@ -82,16 +82,16 @@ spotify.addTrack = function(userId, playlistId, accessToken, songURI, cb){
 };
 
 
-spotify.deleteSong = function(userId, playlistId, accessToken, songUri, cb){
+spotify.deleteSong = function(userId, playlistId, accessToken, songURI, cb){
     console.log('deleting song');
 
-// Need to check what form songUri is passed in as
-    var trackParam = "{ \"tracks\": [{ \"uri\": \"" + songUri + "\" }] }";
+// Need to check what form songURI is passed in as
+    var trackParam = "{ \"tracks\": [{ \"uri\": \"" + songURI + "\" }] }";
     var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
     
     var authorization = 'Bearer ' + accessToken;
     var body = {
-        tracks: [{ uri: songUri }]
+        tracks: [{ uri: songURI }]
     };
 
     request({
