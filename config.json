@@ -1,5 +1,6 @@
 {
     "development": {
-        "port": "4000"
+        "port": "4000",
+        "mongo_url": "mongodb://localhost:27017/test"
     }
 }

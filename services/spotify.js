@@ -117,6 +117,6 @@ spotify.deleteSong = function(userId, playlistId, accessToken, songUri, cb){
         cb(error, response, body);
     });
 
-};
+}
 
 module.exports = spotify;
