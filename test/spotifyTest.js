@@ -56,9 +56,4 @@ describe('spotify', function() {
             });
         });
     });
-
-    describe('#deleteTrack', function() {
-        xit('should delete a track successfully', function(done) {
-        });
-    });
 });
