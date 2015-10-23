@@ -58,17 +58,11 @@ spotify.searchTrack = function(track, accessToken, cb){
 };
 
 
-spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
+spotify.addTrack = function(userId, playlistId, accessToken, songURI, cb){
     console.log('adding song to playlist');
     
-    // need to see what format a song uri is returned from song search and add it onto the uri string
-
-    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
+    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks?position=0&uris=" + songURI;
     var authorization = 'Bearer ' + accessToken;
-    var body = {
-        name: 'Add Song',
-        public: true
-    };
 
     request({
         uri: uri,
@@ -76,7 +70,6 @@ spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
         headers: {
             'Authorization': authorization
         },
-        body: body,
         json: true,
     }, function(error, response, body) {
         if(error) {
