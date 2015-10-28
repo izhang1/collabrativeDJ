@@ -20,7 +20,7 @@ spotify.createPlaylist = function(userId, accessToken, cb) {
             'Authorization': authorization
         },
         body: body,
-        json: true,
+        json: true
     }, function(error, response, body) {
         if(error) {
             console.log('error: ' + JSON.stringify(error));
@@ -31,22 +31,22 @@ spotify.createPlaylist = function(userId, accessToken, cb) {
 };
 
 
-spotify.searchSong = function(song, cb){
-    console.log('searching for song');
+spotify.searchTrack = function(track, accessToken, cb){
+    console.log('searching for track');
 
-    var formattedSong = song.replace(" ", "+");
-    var uri = "https://api.spotify.com/v1/search?q=" + formattedSong + "&type=track";
-    
-    var body = {
-        name: 'Song Search',
-        public: true
-    };
+    var SEARCH_LIMIT = '5';
+
+    var formattedTrack = track.replace(" ", "+");
+    var uri = "https://api.spotify.com/v1/search?q=" + formattedTrack+ "&type=track&limit=" + SEARCH_LIMIT;
+    var authorization = 'Bearer ' + accessToken;
 
     request({
         uri: uri,
         method: 'GET',
-        body: body,
-        json: true,
+        headers: {
+            'Authorization': authorization
+        },
+        json: true
     }, function(error, response, body) {
         if(error) {
             console.log('error: ' + JSON.stringify(error));
@@ -58,17 +58,11 @@ spotify.searchSong = function(song, cb){
 };
 
 
-spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
+spotify.addTrack = function(userId, playlistId, accessToken, songURI, cb){
     console.log('adding song to playlist');
     
-    // need to see what format a song uri is returned from song search and add it onto the uri string
-
-    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
+    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks?position=0&uris=" + songURI;
     var authorization = 'Bearer ' + accessToken;
-    var body = {
-        name: 'Add Song',
-        public: true
-    };
 
     request({
         uri: uri,
@@ -76,7 +70,6 @@ spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
         headers: {
             'Authorization': authorization
         },
-        body: body,
         json: true,
     }, function(error, response, body) {
         if(error) {
@@ -88,37 +81,4 @@ spotify.addSong = function(userId, playlistId, accessToken, songUri, cb){
 
 };
 
-
-spotify.deleteSong = function(userId, playlistId, accessToken, songUri, cb){
-    console.log('deleting song');
-
-// Need to check what form songUri is passed in as
-    var trackParam = "{ \"tracks\": [{ \"uri\": \"" + songUri + "\" }] }" 
-    var uri = "https://api.spotify.com/v1/users/" + userId + "/playlists/" + playlistId + "/tracks";
-    
-    var authorization = 'Bearer ' + accessToken;
-    var body = {
-        tracks: [{ uri: songUri }]
-    };
-
-    request({
-        uri: uri,
-        method: 'DELETE',
-        headers: {
-            'Authorization': authorization
-        },
-        body: body,
-        json: true,
-    }, function(error, response, body) {
-        if(error) {
-            console.log('error: ' + JSON.stringify(error));
-        }
-
-        cb(error, response, body);
-    });
-
-}
-
 module.exports = spotify;
-
-
