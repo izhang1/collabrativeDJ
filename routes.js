@@ -47,7 +47,7 @@ module.exports = function (app, io) {
 
 
     // Check to see if a playlist to join exists
-    app.post('/joinPlaylist', function(req, res) {
+    app.post('/checkPlaylist', function(req, res) {
         var playlistId = req.body.playlistId;
 
         // find playlist in db
