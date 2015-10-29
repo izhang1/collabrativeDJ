@@ -2,9 +2,6 @@
   "name": "collaborativeDJ",
   "version": "0.0.1",
   "private": true,
-  "contributors": [
-    "Levi Starrett <leviathan747@gmail.com>"
-  ],
   "dependencies": {
     "body-parser": "1.4.3",
     "express": "4.5.1",
