@@ -51,16 +51,35 @@ module.exports = function (app, io) {
         var playlistId = req.body.playlistId;
 
         // find playlist in db
-        db.Playlist.findOne({ id: playlistId })
-        .exec(function(err, pl) {
+        db.Playlist.findOne({ id: playlistId }).exec(function(err, pl) {
             if (err) {
                 console.log(err);
                 res.send(500);
                 return;
             }
 
-            if ( pl !== null ) res.send(200);
-            else res.send(404);
+            if ( pl !== null ) {
+                // playlist exists
+                res.send(200);
+            } else {
+                // playlist does not exist
+                res.send(404);
+            }
+        });
+    });
+
+    app.get('/playlist/:playlistId', function(req, res) {
+        var playlistId = req.params.playlistId;
+
+        db.Playlist.findOne({id: playlistId}).exec(function(err, playlist) {
+            if (err) {
+                console.log(err);
+                res.send(500);
+                return;
+            }
+
+            // TODO: Confirm that this data is complete/in the correct form
+            res.send(playlist);
         });
     });
 
