@@ -38,6 +38,27 @@ module.exports = function (app) {
 
     });
 
+    // Check to see if a playlist to join exists
+    app.post('/joinPlaylist', function(req, res) {
+        var playlistId = req.body.playlistId;
+
+        console.log(playlistId);
+
+        // find playlist in db
+        db.Playlist.findOne({ id: playlistId })
+        .exec(function(err, pl) {
+            if (err) {
+                console.log(err);
+                res.send(404);
+                return;
+            }
+
+            console.log(pl);
+            if ( pl != null ) res.send(200);
+            else res.send(404);
+        });
+    });
+
     app.get('/searchSong', function(req, res) {
         var song = req.body.song;
 
