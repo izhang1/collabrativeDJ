@@ -4,9 +4,12 @@ var session    = require('express-session');
 var bodyParser = require('body-parser');
 var http       = require('http');
 var logger     = require('morgan');
+var mongoose   = require('mongoose');
 
 var config     = null;
 var app        = express();
+
+var mongo_url = '';
 
 fs.readFile("config.json", 'utf8', function(err, data) {
     if (err) {
@@ -31,6 +34,17 @@ fs.readFile("config.json", 'utf8', function(err, data) {
 
     console.log(configName);
     console.log("Server port: " + port);
+
+    mongo_url = config[configName].mongo_url;
+
+    // connect to mongo server
+    mongoose.connect(mongo_url, function (err, res) {
+        if (err) {
+            console.log ('ERROR connecting to: ' + mongo_url + '. ' + err);
+        } else {
+            console.log ('Succeeded connected to: ' + mongo_url);
+        }
+    });
 
     // all environments
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -62,4 +76,5 @@ fs.readFile("config.json", 'utf8', function(err, data) {
     http.createServer(app).listen(app.get('port'), function(){
         console.log('Express server listening on port ' + app.get('port'));
     });
+
 });
