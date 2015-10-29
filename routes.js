@@ -11,7 +11,6 @@ module.exports = function (app) {
         var userId = req.body.userId;
         var accessToken = req.body.accessToken;
 
-
         // create a playlist with spotify service
         spotify.createPlaylist(userId, accessToken, function(error, response, playlist) {
 
@@ -123,12 +122,6 @@ module.exports = function (app) {
             res.send(response.statusCode);
         });
 
-    });
-
-    app.post('/joinPlaylist', function(req, res) {
-        var joinCode = req.body.joinCode;
-
-        //TODO: Search database to see if above code exists, if it doesn't return 404
     });
 
 };
