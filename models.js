@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
 
 var Playlist = new mongoose.Schema({
-    id: Number,
+    id: String,
     user_id: Number,
     access_token: String,
     songs: [ {type: mongoose.Schema.Types.ObjectId, ref: 'Song'} ]
 });
 
 var Song = new mongoose.Schema({
-    id: Number,
-    name: String
+    song_uri: String,
+    score: Number
 });
 
 module.exports = {

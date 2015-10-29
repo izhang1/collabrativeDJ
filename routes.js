@@ -11,30 +11,49 @@ module.exports = function (app) {
         var userId = req.body.userId;
         var accessToken = req.body.accessToken;
 
-        // Generate random code to join playlist
-        var timeNow = new Date();
-        var seconds = timeNow.getSeconds();
-        var randomNumber = Math.floor((Math.random() * 1000) + 1);
-        var playlistJoinCode = seconds.toString() + randomNumber.toString();
-
-        // create new record in the DB
-        var new_playlist = new db.Playlist({
-            id: playlistJoinCode,
-            user_id: userId,
-            access_token: accessToken
-        });
-        new_playlist.save(function (err) {if (err) console.log('Error on save!');});
-
-        spotify.createPlaylist(userId, accessToken, function(error, response, body) {
+        // create a playlist with spotify service
+        spotify.createPlaylist(userId, accessToken, function(error, response, playlist) {
 
             if (error) {
-                // TODO: Handle it
                 console.log(error);
+                res.send(response.statusCode);
             }
 
-            res.send(response.statusCode);
+            // create new playlist record in the DB
+            var new_playlist = new db.Playlist({
+                id: playlist.id,
+                user_id: userId,
+                access_token: accessToken
+            });
+            new_playlist.save(function (err) {if (err) console.log('Error on save: ', err);});
+
+            var resp_data = {
+                statusCode: response.statusCode,
+                playlistId: playlist.id
+            }
+
+            res.send(JSON.stringify(resp_data));
         });
 
+    });
+
+
+    // Check to see if a playlist to join exists
+    app.post('/joinPlaylist', function(req, res) {
+        var playlistId = req.body.playlistId;
+
+        // find playlist in db
+        db.Playlist.findOne({ id: playlistId })
+        .exec(function(err, pl) {
+            if (err) {
+                console.log(err);
+                res.send(500);
+                return;
+            }
+
+            if ( pl != null ) res.send(200);
+            else res.send(404);
+        });
     });
 
     app.post('/searchTrack', function(req, res) {
@@ -58,7 +77,6 @@ module.exports = function (app) {
 
 	});
         
-
     });
 
     app.post('/addTrack', function(req, res) {
@@ -117,12 +135,6 @@ module.exports = function (app) {
             res.send(response.statusCode);
         });
 
-    });
-
-    app.post('/joinPlaylist', function(req, res) {
-        var joinCode = req.body.joinCode;
-
-        //TODO: Search database to see if above code exists, if it doesn't return 404
     });
 
 };
