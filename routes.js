@@ -30,7 +30,7 @@ module.exports = function (app) {
             var resp_data = {
                 statusCode: response.statusCode,
                 playlistId: playlist.id
-            }
+            };
 
             res.send(JSON.stringify(resp_data));
         });
@@ -51,7 +51,7 @@ module.exports = function (app) {
                 return;
             }
 
-            if ( pl != null ) res.send(200);
+            if ( pl !== null ) res.send(200);
             else res.send(404);
         });
     });
