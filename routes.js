@@ -37,36 +37,52 @@ module.exports = function (app) {
 
     });
 
-    app.get('/searchSong', function(req, res) {
-        var song = req.body.song;
+    app.post('/searchTrack', function(req, res) {
+        var track = req.body.track;
+	var playlistId = req.body.playlistId;
+	var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
 
-        spotify.searchSong(song, function(error, response, body) {
+	  spotify.searchTrack(track, playlist.access_token, function(error, response, body) {
 
             if(error) {
-                // TODO: Handle error
+                res.send(error.status);
             }
+	    
+	    res.send(body);
 
-            res.send(response.statusCode);
-        });
+          });
+
+	  if(error) {
+	    res.send(500);
+	  }
+
+	});
+        
 
     });
 
-    app.post('/addSong', function(req, res) {
+    app.post('/addTrack', function(req, res) {
         var accessToken = req.body.accessToken;
-        var songUri = req.body.songUri;
-        var playlistCode = req.body.playlistCode;
+        var trackUri = req.body.trackUri;
+        var playlistId = req.body.playlistId
 
-        //TODO: Search database to find corresponding playlistId and userId that code matches with.
-        // If neither exist, return 404
+        var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
 
-        spotify.addSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
+          spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
 
             if(error) {
-                // TODO: Handle error
+                res.send(error.status);
             }
 
             res.send(response.statusCode);
-        });
+
+          });
+
+	  if(err) {
+	    res.send(500);
+	  }
+
+	});
     });
 
     app.post('/voteSong', function(req, res) {
