@@ -89,11 +89,15 @@ module.exports = function (app) {
 
     app.post('/voteSong', function(req, res) {
         var vote = req.body.vote;
-        var playlistCode = req.body.playlistCode;
+        var playlistId = req.body.playlistId;
+        var songUri = req.body.songUri;
 
-        //TODO: search database for playlistID corresponding to playlistCode,
-        // then find song in that playlist's table and +1 the vote count for it.
-        // If neither the playlist or song exist, return 404
+        // get the song we want to apply the vote to
+        db.Playlist.findOne({ id: playlistId })
+        .populate({ path: 'songs', match: { song_uri: songUri } })
+        .exec(function(err, song) {
+            console.log(song);
+        });
 
     });
 
