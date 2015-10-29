@@ -8,6 +8,8 @@ var mongoose   = require('mongoose');
 
 var config     = null;
 var app        = express();
+var server     = http.createServer(app);
+var io         = require('socket.io')(server);
 
 var mongo_url = '';
 
@@ -69,11 +71,10 @@ fs.readFile("config.json", 'utf8', function(err, data) {
     app.use(bodyParser.urlencoded({extended: 'false'}));
 
     // REQUESTS
-    // app.use(require('./routes.js'));
-    require('./routes.js')(app);
+    require('./routes.js')(app, io);
 
     // start server
-    http.createServer(app).listen(app.get('port'), function(){
+    server.listen(app.get('port'), function(){
         console.log('Express server listening on port ' + app.get('port'));
     });
 

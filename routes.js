@@ -1,7 +1,15 @@
 var spotify = require('./services/spotify.js');
 var db = require('./models.js');
 
-module.exports = function (app) {
+module.exports = function (app, io) {
+
+    // basic socket.io logging
+    io.on('connection', function(socket) {
+        console.log('user connected');
+        socket.on('disconnect', function() {
+            console.log('user disconnected');
+        });
+    });
 
     app.get('/', function(req, res) {
         res.send('ello m8');
@@ -84,6 +92,7 @@ module.exports = function (app) {
             }
 
             res.send(response.statusCode);
+            // io.emit('playlist updated', JSON);
         });
     });
 
