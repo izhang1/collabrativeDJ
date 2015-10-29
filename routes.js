@@ -41,8 +41,6 @@ module.exports = function (app) {
     app.post('/joinPlaylist', function(req, res) {
         var playlistId = req.body.playlistId;
 
-        console.log(playlistId);
-
         // find playlist in db
         db.Playlist.findOne({ id: playlistId })
         .exec(function(err, pl) {
@@ -52,7 +50,6 @@ module.exports = function (app) {
                 return;
             }
 
-            console.log(pl);
             if ( pl != null ) res.send(200);
             else res.send(404);
         });
