@@ -95,30 +95,31 @@ module.exports = function (app) {
         // then find song in that playlist's table and +1 the vote count for it.
         // If neither the playlist or song exist, return 404
 
+        // io.emit('playlist updated', JSON);
     });
 
-    app.post('/deleteSong', function(req, res) {
-        var userId = req.body.userId;
-        var playlistCode = req.body.playlistCode;
-        var accessToken = req.body.accessToken;
-        var songUri = req.body.songUri;
+    // app.post('/deleteSong', function(req, res) {
+    //     var userId = req.body.userId;
+    //     var playlistCode = req.body.playlistCode;
+    //     var accessToken = req.body.accessToken;
+    //     var songUri = req.body.songUri;
 
-        //TODO: Search database for playlistId and userId that matches playlistCode, 
-        // return 404 if not found
+    //     //TODO: Search database for playlistId and userId that matches playlistCode, 
+    //     // return 404 if not found
 
-        spotify.deleteSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
+    //     spotify.deleteSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
 
-            if(error) {
-                // TODO: Handle error
-            }
-            else {
-                // TODO: At this point, we know the user making this request is the playlist owner,
-                // so delete the song from our database too.
-            }
+    //         if(error) {
+    //             // TODO: Handle error
+    //         }
+    //         else {
+    //             // TODO: At this point, we know the user making this request is the playlist owner,
+    //             // so delete the song from our database too.
+    //         }
 
-            res.send(response.statusCode);
-        });
+    //         res.send(response.statusCode);
+    //     });
 
-    });
+    // });
 
 };
