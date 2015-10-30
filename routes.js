@@ -109,7 +109,6 @@ module.exports = function (app, io) {
 
     app.post('/addTrack', function(req, res) {
         var playlistId = req.body.playlistId;
-        var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
 
         db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
@@ -146,11 +145,52 @@ module.exports = function (app, io) {
         var playlistId = req.body.playlistId;
         var trackUri = req.body.trackUri;
 
+        // validate vote (either 1 or -1)
+        if ( !( vote == 1 || vote == -1 ) ) {
+            res.send(500);
+        }
+
         // get the song we want to apply the vote to
         db.Playlist.findOne({ id: playlistId })
-        .populate({ path: 'songs', match: { song_uri: trackUri } })
-        .exec(function(err, song) {
-            console.log(song);
+        .exec(function(err, pl) {
+
+            // check error
+            if (err) {
+                console.log(err);
+                res.send(500);
+                return;
+            }
+
+            // check null
+            if ( pl == null ) {
+                res.send(500);
+                return;
+            }
+
+            // find the correct song
+            var song_index = -1;
+            for (var i = 0; i < pl.songs.length; i++) {
+                if ( pl.songs[i].song_uri === trackUri ) {
+                    song_index = i;
+                }
+            }
+
+            // update the song
+            if ( song_index != -1 ) {
+                pl.songs[song_index].score += parseInt(vote);
+                pl.save(function(err){
+                    if (err) {
+                        console.log(err);
+                        res.send(500);
+                    }
+
+                    // io.emit('playlist updated', JSON);
+                    res.send(200);
+                });
+            }
+            else {
+                res.send(404);
+            }
         });
 
         // io.emit('playlist updated', JSON);
