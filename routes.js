@@ -99,8 +99,8 @@ module.exports = function (app) {
             }
 
 	    var newSong = new db.Song({
-	      song_uri = track_uri,
-	      score = 0
+	      song_uri: track_uri,
+	      score: 0
 	    });
 
 	    playlist.songs.push(newSong)
