@@ -174,8 +174,22 @@ module.exports = function (app, io) {
                         res.sendStatus(500);
                     }
 
-                    // io.emit('playlist updated', JSON);
-                    res.send(response.statusCode);
+                    getPlaylist(playlist.id, function(err, pl) {
+                        // check error
+                        if (err) {
+                            console.log(err);
+                            res.send(500);
+                            return;
+                        }
+
+                        // check null
+                        if ( pl == null ) {
+                            res.send(500);
+                            return;
+                        }
+                        io.emit(pl, JSON);
+                        res.send(200);
+                    });
                 });
             });
         });
@@ -220,8 +234,22 @@ module.exports = function (app, io) {
                         res.send(500);
                     }
 
-                    // io.emit('playlist updated', JSON);
-                    res.send(200);
+                    getPlaylist(playlist.id, function(err, pl) {
+                        // check error
+                        if (err) {
+                            console.log(err);
+                            res.send(500);
+                            return;
+                        }
+
+                        // check null
+                        if ( pl == null ) {
+                            res.send(500);
+                            return;
+                        }
+                        io.emit(pl, JSON);
+                        res.send(200);
+                    });
                 });
             }
             else {
@@ -229,7 +257,6 @@ module.exports = function (app, io) {
             }
         });
 
-        // io.emit('playlist updated', JSON);
     });
 
 };
