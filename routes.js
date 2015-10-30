@@ -183,12 +183,6 @@ module.exports = function (app, io) {
                             res.send(500);
                             return;
                         }
-
-                        // check null
-                        if ( pl == null ) {
-                            res.send(500);
-                            return;
-                        }
                         io.emit('playlist updated', pl);
                         res.send(200);
                     });
@@ -219,13 +213,13 @@ module.exports = function (app, io) {
             }
 
             // check null
-            if ( pl == null ) {
+            if ( pl === null ) {
                 res.send(500);
                 return;
             }
 
             // find the correct song
-            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri}), trackUri);
+            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri;}), trackUri);
 
             // update the song
             if ( song_index != -1 ) {
