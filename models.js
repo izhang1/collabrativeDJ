@@ -7,7 +7,7 @@ var Song = new mongoose.Schema({
 
 var Playlist = new mongoose.Schema({
     id: String,
-    user_id: Number,
+    user_id: String,
     access_token: String,
     songs: [ Song ]
 });
@@ -16,4 +16,4 @@ var Playlist = new mongoose.Schema({
 module.exports = {
     Playlist: mongoose.model('Playlists', Playlist),
     Song: mongoose.model('Songs', Song)
-}
+};
