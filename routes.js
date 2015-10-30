@@ -32,16 +32,20 @@ module.exports = function (app, io) {
                 user_id: userId,
                 access_token: accessToken
             });
-            new_playlist.save(function (err) {if (err) console.log('Error on save: ', err);});
 
-            var resp_data = {
-                statusCode: response.statusCode,
-                playlistId: playlist.id
-            };
+            new_playlist.save(function (err) {
+                if (err) {
+                    console.log('Error on save: ', err);
+                }
 
-            res.send(JSON.stringify(resp_data));
+                var resp_data = {
+                    statusCode: response.statusCode,
+                    playlistId: playlist.id
+                };
+
+                res.send(JSON.stringify(resp_data));
+            });
         });
-
     });
 
 
