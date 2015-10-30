@@ -189,7 +189,7 @@ module.exports = function (app, io) {
                             res.send(500);
                             return;
                         }
-                        io.emit(pl, JSON);
+                        io.emit('playlist updated', pl);
                         res.send(200);
                     });
                 });
@@ -249,7 +249,7 @@ module.exports = function (app, io) {
                             res.send(500);
                             return;
                         }
-                        io.emit(pl, JSON);
+                        io.emit('playlist updated', pl);
                         res.send(200);
                     });
                 });
