@@ -1,5 +1,6 @@
 var spotify = require('./services/spotify.js');
 var db = require('./models.js');
+var _ = require('lodash');
 
 module.exports = function (app, io) {
 
@@ -144,37 +145,53 @@ module.exports = function (app, io) {
 
     app.post('/voteSong', function(req, res) {
         var vote = req.body.vote;
-        var playlistCode = req.body.playlistCode;
+        var playlistId = req.body.playlistId;
+        var trackUri = req.body.trackUri;
 
-        //TODO: search database for playlistID corresponding to playlistCode,
-        // then find song in that playlist's table and +1 the vote count for it.
-        // If neither the playlist or song exist, return 404
+        // validate vote (either 1 or -1)
+        if ( !( vote == 1 || vote == -1 ) ) {
+            res.send(500);
+        }
+
+        // get the song we want to apply the vote to
+        db.Playlist.findOne({ id: playlistId })
+        .exec(function(err, pl) {
+
+            // check error
+            if (err) {
+                console.log(err);
+                res.send(500);
+                return;
+            }
+
+            // check null
+            if ( pl == null ) {
+                res.send(500);
+                return;
+            }
+
+            // find the correct song
+            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri}), trackUri);
+
+            // update the song
+            if ( song_index != -1 ) {
+                pl.songs[song_index].score += parseInt(vote);
+                pl.save(function(err){
+                    if (err) {
+                        console.log(err);
+                        res.send(500);
+                    }
+
+                    // io.emit('playlist updated', JSON);
+                    res.send(200);
+                });
+            }
+            else {
+                res.send(404);
+            }
+        });
 
         // io.emit('playlist updated', JSON);
     });
-
-    // app.post('/deleteSong', function(req, res) {
-    //     var userId = req.body.userId;
-    //     var playlistCode = req.body.playlistCode;
-    //     var accessToken = req.body.accessToken;
-    //     var songUri = req.body.songUri;
-
-    //     //TODO: Search database for playlistId and userId that matches playlistCode, 
-    //     // return 404 if not found
-
-    //     spotify.deleteSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
-
-    //         if(error) {
-    //             // TODO: Handle error
-    //         }
-    //         else {
-    //             // TODO: At this point, we know the user making this request is the playlist owner,
-    //             // so delete the song from our database too.
-    //         }
-
-    //         res.send(response.statusCode);
-    //     });
-
-    // });
 
 };
