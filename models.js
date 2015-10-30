@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var Song = new mongoose.Schema({
     song_uri: String,
-    score: Number
+    score: Number,
+    track_name: String
 });
 
 var Playlist = new mongoose.Schema({
