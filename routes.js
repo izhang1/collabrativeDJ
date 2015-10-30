@@ -1,5 +1,6 @@
 var spotify = require('./services/spotify.js');
 var db = require('./models.js');
+var _ = require('lodash');
 
 module.exports = function (app, io) {
 
@@ -170,12 +171,7 @@ module.exports = function (app, io) {
             }
 
             // find the correct song
-            var song_index = -1;
-            for (var i = 0; i < pl.songs.length; i++) {
-                if ( pl.songs[i].song_uri === trackUri ) {
-                    song_index = i;
-                }
-            }
+            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri}), trackUri);
 
             // update the song
             if ( song_index != -1 ) {
