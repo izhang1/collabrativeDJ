@@ -2,6 +2,44 @@ var spotify = require('./services/spotify.js');
 var db = require('./models.js');
 var _ = require('lodash');
 
+// Utility function to sort an JSON array of JSON objects
+// by a specific key
+var sortByKey = function (array, key, order) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        if (order === 'a') {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }
+        else {
+            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+        }
+    });
+};
+
+// Internal function for getting a JSON list of song objects
+// for a specific playlist in order of score
+// callback signature: cb(err, playlist)
+var getPlaylist = function(playlistId, cb) {
+    db.Playlist.findOne({id: playlistId})
+    .exec(function(err, pl) {
+        // check error
+        if (err) {
+            cb(err, null);
+        }
+
+        // check null
+        if ( pl == null ) {
+            cb("Playlist does not exist", null);
+        }   
+
+        // sort the songs
+        pl.songs = sortByKey(pl.songs, 'score', 'd');
+
+        // invoke the callback
+        cb(null, pl);
+    });
+};
+
 module.exports = function (app, io) {
 
     // basic socket.io logging
