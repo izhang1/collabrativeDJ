@@ -120,8 +120,7 @@ module.exports = function (app, io) {
                 res.send(500);
             }
 
-            spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
-
+            spotify.addTrack(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
                 if(error) {
                     res.send(error.status);
                 }
