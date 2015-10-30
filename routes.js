@@ -37,6 +37,7 @@ module.exports = function (app) {
 
     });
 
+
     // Check to see if a playlist to join exists
     app.post('/joinPlaylist', function(req, res) {
         var playlistId = req.body.playlistId;
@@ -55,36 +56,62 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/searchSong', function(req, res) {
-        var song = req.body.song;
+    app.post('/searchTrack', function(req, res) {
+        var track = req.body.track;
+	var playlistId = req.body.playlistId;
 
-        spotify.searchSong(song, function(error, response, body) {
+	var accessToken = db.Playlist.findOne({id: playlistId})
+	.exec(function(err, playlist){
+
+	  spotify.searchTrack(track, playlist.access_token, function(error, response, body) {
 
             if(error) {
-                // TODO: Handle error
+                res.send(error.status);
             }
+	    
+	    res.send(body);
 
-            res.send(response.statusCode);
-        });
+          });
 
+	  if(error) {
+	    res.send(500);
+	  }
+
+	});
+        
     });
 
-    app.post('/addSong', function(req, res) {
+    app.post('/addTrack', function(req, res) {
         var accessToken = req.body.accessToken;
-        var songUri = req.body.songUri;
-        var playlistCode = req.body.playlistCode;
+        var trackUri = req.body.trackUri;
+        var playlistId = req.body.playlistId
 
-        //TODO: Search database to find corresponding playlistId and userId that code matches with.
-        // If neither exist, return 404
+        var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
 
-        spotify.addSong(userId, playlistId, accessToken, songUri, function(error, response, body) {
+	  if(err) {
+	    res.send(500);
+	  }
+
+          spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
 
             if(error) {
-                // TODO: Handle error
+                res.send(error.status);
             }
 
+	    var newSong = new db.Song({
+	      song_uri: track_uri,
+	      score: 0
+	    });
+
+	    playlist.songs.push(newSong)
+	    .save(function(err){
+	      res.send(500);
+	    });
+
             res.send(response.statusCode);
-        });
+
+          });
+	});
     });
 
     app.post('/voteSong', function(req, res) {
