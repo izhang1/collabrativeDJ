@@ -42,9 +42,9 @@ spotify.searchTrack = function(track, accessToken, cb){
 
     request({
         uri: uri,
-        method: 'GET',
+        method: 'GET',  // Change this to POST for a bug
         headers: {
-            'Authorization': authorization
+            'Authorization': authorization  // Change authorization to accessToken for a bug
         },
         json: true
     }, function(error, response, body) {
@@ -66,7 +66,7 @@ spotify.addTrack = function(userId, playlistId, accessToken, songURI, cb){
 
     request({
         uri: uri,
-        method: 'POST',
+        method: 'POST',  // Change this to GET for a bug
         headers: {
             'Authorization': authorization
         },
