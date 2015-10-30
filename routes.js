@@ -151,6 +151,7 @@ module.exports = function (app, io) {
     app.post('/addTrack', function(req, res) {
         var playlistId = req.body.playlistId;
         var trackUri = req.body.trackUri;
+        var trackName = req.body.trackName;
 
         db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
             if(err) {
@@ -164,6 +165,7 @@ module.exports = function (app, io) {
 
                 var newSong = new db.Song({
                     song_uri: trackUri,
+                    track_name: trackName,
                     score: 0  // Change this to -1 for a bug, so the first vote won't count
                 });
 
