@@ -21,10 +21,9 @@ module.exports = function (app, io) {
 
         // create a playlist with spotify service
         spotify.createPlaylist(userId, accessToken, function(error, response, playlist) {
-
             if (error) {
                 console.log(error);
-                res.send(response.statusCode);
+                res.sendStatus(response.statusCode);
             }
 
             // create new playlist record in the DB
