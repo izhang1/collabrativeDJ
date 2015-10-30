@@ -102,14 +102,13 @@ module.exports = function (app, io) {
                     res.send(error.status);
                 }
 
-                res.send(body);
+                res.send(body);  // Change this to res.sendStatus(200) for a bug, as its supposed to return the found info and not 200
             });
         });
     });
 
     app.post('/addTrack', function(req, res) {
         var playlistId = req.body.playlistId;
-        var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
 
         db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
@@ -124,7 +123,7 @@ module.exports = function (app, io) {
 
                 var newSong = new db.Song({
                     song_uri: trackUri,
-                    score: 0
+                    score: 0  // Change this to -1 for a bug, so the first vote won't count
                 });
 
                 playlist.songs.push(newSong);
