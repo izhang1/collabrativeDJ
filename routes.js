@@ -130,8 +130,7 @@ module.exports = function (app, io) {
                     score: 0
                 });
 
-                playlist.songs.push(newSong)
-                .save(function(err){
+                playlist.songs.push(newSong).save(function(err){
                     res.send(500);
                 });
 
