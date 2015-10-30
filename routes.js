@@ -36,6 +36,8 @@ module.exports = function (app, io) {
             new_playlist.save(function (err) {
                 if (err) {
                     console.log('Error on save: ', err);
+                } else {
+                    console.log('Successfully saved new playlist: ' + new_playlist);
                 }
 
                 var resp_data = {
@@ -102,7 +104,7 @@ module.exports = function (app, io) {
                     res.send(error.status);
                 }
 
-                res.send(body);
+                res.send(body);  // Change this to res.sendStatus(200) for a bug, as its supposed to return the found info and not 200
             });
         });
     });
@@ -123,7 +125,7 @@ module.exports = function (app, io) {
 
                 var newSong = new db.Song({
                     song_uri: trackUri,
-                    score: 0
+                    score: 0  // Change this to -1 for a bug, so the first vote won't count
                 });
 
                 playlist.songs.push(newSong);

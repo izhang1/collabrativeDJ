@@ -3,7 +3,7 @@ var request = require('request');
 var spotify = {};
 
 spotify.createPlaylist = function(userId, accessToken, cb) {
-    console.log('creating playlist');
+    console.log('creating playlist with userId \'' + userId + '\' and accessToken \'' + accessToken);
 
     // TODO: May want to create a common functions called by each of the spotify functions for making requests (and checking refresh status?)
     var uri = 'https://api.spotify.com/v1/users/' + userId + '/playlists';
@@ -42,9 +42,9 @@ spotify.searchTrack = function(track, accessToken, cb){
 
     request({
         uri: uri,
-        method: 'GET',
+        method: 'GET',  // Change this to POST for a bug
         headers: {
-            'Authorization': authorization
+            'Authorization': authorization  // Change authorization to accessToken for a bug
         },
         json: true
     }, function(error, response, body) {
@@ -66,7 +66,7 @@ spotify.addTrack = function(userId, playlistId, accessToken, songURI, cb){
 
     request({
         uri: uri,
-        method: 'POST',
+        method: 'POST',  // Change this to GET for a bug
         headers: {
             'Authorization': authorization
         },
