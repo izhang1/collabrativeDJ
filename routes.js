@@ -236,7 +236,7 @@ module.exports = function (app, io) {
                         res.send(500);
                     }
 
-                    getPlaylist(playlist.id, function(err, pl) {
+                    getPlaylist(pl.id, function(err, pl) {
                         // check error
                         if (err) {
                             console.log(err);
