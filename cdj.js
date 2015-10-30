@@ -35,7 +35,7 @@ fs.readFile("config.json", 'utf8', function(err, data) {
     console.log(configName);
     console.log("Server port: " + port);
 
-    mongo_url = config[configName].mongo_url;
+    mongo_url = process.env.MONGO_URI || config[configName].mongo_url;
 
     // connect to mongo server
     mongoose.connect(mongo_url, function (err, res) {
