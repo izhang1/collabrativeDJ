@@ -114,33 +114,32 @@ module.exports = function (app, io) {
     app.post('/addTrack', function(req, res) {
         var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
-        var playlistId = req.body.playlistId
+        var playlistId = req.body.playlistId;
 
-        var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
-
-	  if(err) {
-	    res.send(500);
-	  }
-
-          spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
-
-            if(error) {
-                res.send(error.status);
+        db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
+            if(err) {
+                res.send(500);
             }
 
-	    var newSong = new db.Song({
-	      song_uri: track_uri,
-	      score: 0
-	    });
+            spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
 
-	    playlist.songs.push(newSong)
-	    .save(function(err){
-	      res.send(500);
-	    });
+                if(error) {
+                    res.send(error.status);
+                }
 
-            res.send(response.statusCode);
+                var newSong = new db.Song({
+                    song_uri: track_uri,
+                    score: 0
+                });
 
-            // io.emit('playlist updated', JSON);
+                playlist.songs.push(newSong)
+                .save(function(err){
+                    res.send(500);
+                });
+
+                // io.emit('playlist updated', JSON);
+                res.send(response.statusCode);
+            });
         });
     });
 
