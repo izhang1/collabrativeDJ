@@ -88,30 +88,27 @@ module.exports = function (app, io) {
 
     app.post('/searchTrack', function(req, res) {
         var track = req.body.track;
-	var playlistId = req.body.playlistId;
+        var playlistId = req.body.playlistId;
 
-	var accessToken = db.Playlist.findOne({id: playlistId})
-	.exec(function(err, playlist){
-
-	  spotify.searchTrack(track, playlist.access_token, function(error, response, body) {
-
-            if(error) {
-                res.send(error.status);
+        db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
+            if(err) {
+                console.log('couldn\'t find playlist in db');
+                res.send(500);
             }
-	    
-	    res.send(body);
 
-          });
+            spotify.searchTrack(track, playlist.access_token, function(error, response, body) {
+                if(error) {
+                    console.log(error);
+                    res.send(error.status);
+                }
 
-	  if(error) {
-	    res.send(500);
-	  }
-
-	});
-        
+                res.send(body);
+            });
+        });
     });
 
     app.post('/addTrack', function(req, res) {
+        var playlistId = req.body.playlistId;
         var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
 
@@ -126,16 +123,20 @@ module.exports = function (app, io) {
                 }
 
                 var newSong = new db.Song({
-                    song_uri: track_uri,
+                    song_uri: trackUri,
                     score: 0
                 });
 
-                playlist.songs.push(newSong).save(function(err){
-                    res.send(500);
-                });
+                playlist.songs.push(newSong);
+                playlist.save(function(err){
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                    }
 
-                // io.emit('playlist updated', JSON);
-                res.send(response.statusCode);
+                    // io.emit('playlist updated', JSON);
+                    res.send(response.statusCode);
+                });
             });
         });
     });
