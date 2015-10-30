@@ -59,7 +59,9 @@ module.exports = function (app) {
     app.post('/searchTrack', function(req, res) {
         var track = req.body.track;
 	var playlistId = req.body.playlistId;
-	var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
+
+	var accessToken = db.Playlist.findOne({id: playlistId})
+	.exec(function(err, playlist){
 
 	  spotify.searchTrack(track, playlist.access_token, function(error, response, body) {
 
@@ -86,20 +88,29 @@ module.exports = function (app) {
 
         var accessToken = db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
 
+	  if(err) {
+	    res.send(500);
+	  }
+
           spotify.addSong(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
 
             if(error) {
                 res.send(error.status);
             }
 
+	    var newSong = new db.Song({
+	      song_uri = track_uri,
+	      score = 0
+	    });
+
+	    playlist.songs.push(newSong)
+	    .save(function(err){
+	      res.send(500);
+	    });
+
             res.send(response.statusCode);
 
           });
-
-	  if(err) {
-	    res.send(500);
-	  }
-
 	});
     });
 
