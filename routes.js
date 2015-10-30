@@ -114,7 +114,6 @@ module.exports = function (app, io) {
     app.post('/addTrack', function(req, res) {
         var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
-        var playlistId = req.body.playlistId;
 
         db.Playlist.findOne({id: playlistId}).exec(function(err, playlist){
             if(err) {
