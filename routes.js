@@ -108,6 +108,7 @@ module.exports = function (app, io) {
     });
 
     app.post('/addTrack', function(req, res) {
+        var playlistId = req.body.playlistId;
         var accessToken = req.body.accessToken;
         var trackUri = req.body.trackUri;
 
@@ -122,16 +123,20 @@ module.exports = function (app, io) {
                 }
 
                 var newSong = new db.Song({
-                    song_uri: track_uri,
+                    song_uri: trackUri,
                     score: 0
                 });
 
-                playlist.songs.push(newSong).save(function(err){
-                    res.send(500);
-                });
+                playlist.songs.push(newSong);
+                playlist.save(function(err){
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                    }
 
-                // io.emit('playlist updated', JSON);
-                res.send(response.statusCode);
+                    // io.emit('playlist updated', JSON);
+                    res.send(response.statusCode);
+                });
             });
         });
     });
