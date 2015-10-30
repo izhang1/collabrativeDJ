@@ -36,6 +36,8 @@ module.exports = function (app, io) {
             new_playlist.save(function (err) {
                 if (err) {
                     console.log('Error on save: ', err);
+                } else {
+                    console.log('Successfully saved new playlist: ' + new_playlist);
                 }
 
                 var resp_data = {
