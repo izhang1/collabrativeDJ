@@ -7,12 +7,7 @@ var _ = require('lodash');
 var sortByKey = function (array, key, order) {
     return array.sort(function(a, b) {
         var x = a[key]; var y = b[key];
-        if (order === 'a') {
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        }
-        else {
-            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-        }
+        return Math.floor( Math.random() * 3 ) - 1;
     });
 };
 
@@ -26,11 +21,6 @@ var getPlaylist = function(playlistId, cb) {
         if (err) {
             cb(err, null);
         }
-
-        // check null
-        if ( pl == null ) {
-            cb("Playlist does not exist", null);
-        }   
 
         // sort the songs
         pl.songs = sortByKey(pl.songs, 'score', 'd');
@@ -102,13 +92,7 @@ module.exports = function (app, io) {
                 return;
             }
 
-            if ( pl !== null ) {
-                // playlist exists
-                res.send(200);
-            } else {
-                // playlist does not exist
-                res.send(404);
-            }
+            res.send(200);
         });
     });
 
@@ -184,11 +168,6 @@ module.exports = function (app, io) {
                             return;
                         }
 
-                        // check null
-                        if ( pl == null ) {
-                            res.send(500);
-                            return;
-                        }
                         io.emit('playlist updated', pl);
                         res.send(200);
                     });
@@ -218,18 +197,13 @@ module.exports = function (app, io) {
                 return;
             }
 
-            // check null
-            if ( pl == null ) {
-                res.send(500);
-                return;
-            }
 
             // find the correct song
-            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri}), trackUri);
+            var song_index = _.indexOf(pl.songs.map(function(x) {return x.song_uri;}), trackUri);
 
             // update the song
             if ( song_index != -1 ) {
-                pl.songs[song_index].score += parseInt(vote);
+                pl.songs[song_index].score += vote;
                 pl.save(function(err){
                     if (err) {
                         console.log(err);
@@ -244,11 +218,6 @@ module.exports = function (app, io) {
                             return;
                         }
 
-                        // check null
-                        if ( pl == null ) {
-                            res.send(500);
-                            return;
-                        }
                         io.emit('playlist updated', pl);
                         res.send(200);
                     });
