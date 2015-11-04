@@ -158,6 +158,12 @@ module.exports = function (app, io) {
                 res.send(500);
             }
 
+            // check if song already exists in playlist
+            if ( _.includes(playlist.songs.map(function(x) {return x.song_uri}), trackUri) ) {
+                res.send(404);  // send a 404 to tell the app that the song was not added
+                return;
+            }
+
             spotify.addTrack(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
                 if(error) {
                     res.send(error.status);
