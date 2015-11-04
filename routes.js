@@ -158,6 +158,12 @@ module.exports = function (app, io) {
                 res.send(500);
             }
 
+            // check if playlist is null
+            if ( playlist == null ) {
+                res.send(404);  // send a 404 to tell the app that the playlist does not exist
+                return;
+            }
+
             // check if song already exists in playlist
             if ( _.includes(playlist.songs.map(function(x) {return x.song_uri}), trackUri) ) {
                 res.send(400);  // send a 400 to tell the app that the song was not added
