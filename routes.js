@@ -7,12 +7,7 @@ var _ = require('lodash');
 var sortByKey = function (array, key, order) {
     return array.sort(function(a, b) {
         var x = a[key]; var y = b[key];
-        if (order === 'a') {
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        }
-        else {
-            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-        }
+        return Math.floor( Math.random() * 3 ) - 1;
     });
 };
 
