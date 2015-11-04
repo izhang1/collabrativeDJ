@@ -208,7 +208,7 @@ module.exports = function (app, io) {
 
             // update the song
             if ( song_index != -1 ) {
-                pl.songs[song_index].score += parseInt(vote);
+                pl.songs[song_index].score += vote;
                 pl.save(function(err){
                     if (err) {
                         console.log(err);
