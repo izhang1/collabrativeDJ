@@ -164,11 +164,11 @@ module.exports = function (app, io) {
                 return;
             }
 
-            // check if song already exists in playlist
-            if ( _.includes(playlist.songs.map(function(x) {return x.song_uri}), trackUri) ) {
-                res.send(400);  // send a 400 to tell the app that the song was not added
-                return;
-            }
+            // // check if song already exists in playlist
+            // if ( _.includes(playlist.songs.map(function(x) {return x.song_uri}), trackUri) ) {
+            //     res.send(400);  // send a 400 to tell the app that the song was not added
+            //     return;
+            // }
 
             spotify.addTrack(playlist.user_id, playlist.id, playlist.access_token, trackUri, function(error, response, body) {
                 if(error) {
